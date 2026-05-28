@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../members/Members.css';
+import './Members.css';
 
 const Members = () => {
   const [members, setMembers] = useState([]);
