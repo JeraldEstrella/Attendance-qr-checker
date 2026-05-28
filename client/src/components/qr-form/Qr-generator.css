@@ -1,0 +1,250 @@
+/* ── Wrapper ──────────────────────────────────────────── */
+.qrgen-card {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  padding: 1.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.qrgen-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.qrgen-icon {
+  width: 38px;
+  height: 38px;
+  background: #ede9fe;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.qrgen-icon i {
+  font-size: 20px;
+  color: #6366f1;
+}
+.qrgen-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+.qrgen-subtitle {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+/* Close button — top right of card */
+.qrgen-card .close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 15px;
+  transition: background 0.15s;
+}
+.qrgen-card .close-btn:hover {
+  background: #f5f5f5;
+}
+.qrgen-card .close-btn i {
+  font-size: 15px;
+}
+
+/* ── Form ─────────────────────────────────────────────── */
+.qrgen-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qrgen-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.qrgen-field label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.qrgen-field input,
+.qrgen-field select {
+  padding: 9px 11px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #1a1a2e;
+  background: #fff;
+  transition: border-color 0.15s;
+  outline: none;
+}
+.qrgen-field input:focus,
+.qrgen-field select:focus {
+  border-color: #6366f1;
+}
+.qrgen-field input::placeholder {
+  color: #c4c4c4;
+}
+
+.qrgen-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.qrgen-divider {
+  border: none;
+  border-top: 1px solid #f3f4f6;
+  margin: 2px 0;
+}
+
+.qrgen-btn {
+  width: 100%;
+  padding: 10px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: opacity 0.15s;
+}
+.qrgen-btn i {
+  font-size: 17px;
+}
+.qrgen-btn:hover {
+  opacity: 0.88;
+}
+.qrgen-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── QR Preview ───────────────────────────────────────── */
+.qrgen-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1rem;
+  padding: 1.1rem;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px dashed #d1d5db;
+  animation: qrFadeIn 0.25s ease;
+}
+@keyframes qrFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.qrgen-qr-box {
+  width: 130px;
+  height: 130px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qrgen-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+}
+.qrgen-cell {
+  border-radius: 1px;
+  background: #e5e7eb;
+}
+.qrgen-cell.filled {
+  background: #1a1a2e;
+}
+
+.qrgen-info {
+  text-align: center;
+}
+.qrgen-info strong {
+  display: block;
+  font-size: 0.875rem;
+  color: #1a1a2e;
+}
+.qrgen-info span {
+  font-size: 0.72rem;
+  color: #aaa;
+}
+
+.qrgen-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.qrgen-dl-btn,
+.qrgen-reset-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.qrgen-dl-btn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+}
+.qrgen-reset-btn {
+  background: #fff;
+  color: #6366f1;
+  border: 1.5px solid #6366f1;
+}
+.qrgen-dl-btn i,
+.qrgen-reset-btn i {
+  font-size: 15px;
+}
+.qrgen-dl-btn:hover,
+.qrgen-reset-btn:hover {
+  opacity: 0.85;
+}
