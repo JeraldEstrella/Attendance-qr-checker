@@ -10,7 +10,8 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'https://attendance-qr-checker-3eg5ngkpc-jek-s-projects.vercel.app',
+  'http://localhost:5173',
+  'https://attendance-qr-checker-ojpkugd2t-jek-s-projects.vercel.app',
 ];
 
 app.use(
