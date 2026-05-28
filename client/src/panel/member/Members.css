@@ -1,76 +1,267 @@
-.members-container {
-  padding: 2rem;
-  max-width: 1100px;
+/* ── Page layout ──────────────────────────────────────── */
+.members-page {
+  padding: 2rem 2.5rem;
+  max-width: 1200px;
   margin: 0 auto;
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-}
-
-.members-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.members-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ── Top bar ──────────────────────────────────────────── */
+.members-topbar {
+  display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.members-header h3 {
+.members-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.members-title {
   margin: 0;
-  font-size: 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.members-total-badge {
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 12px;
   font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+}
+
+.members-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.members-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.members-search-icon {
+  position: absolute;
+  left: 11px;
+  color: #9ca3af;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.members-search {
+  padding: 9px 14px 9px 34px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-family: inherit;
   color: #1f2937;
+  background: #fff;
+  outline: none;
+  width: 240px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
-.member-count {
-  background: #6366f1;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: bold;
+.members-search:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-.members-list table {
+.members-search::placeholder {
+  color: #d1d5db;
+}
+
+.members-refresh-btn {
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: all 0.15s;
+}
+
+.members-refresh-btn:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+  background: #ede9fe;
+}
+
+/* ── Table card ───────────────────────────────────────── */
+.members-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.members-table-wrap {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* ── Table ────────────────────────────────────────────── */
+.members-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 680px;
 }
 
-.members-list th {
+.members-table thead tr {
+  background: #f9fafb;
+  border-bottom: 1.5px solid #e5e7eb;
+}
+
+.members-table th {
   text-align: left;
-  padding: 14px;
-  border-bottom: 2px solid #e5e7eb;
-  font-weight: 600;
-  color: #6b7280;
-  font-size: 14px;
+  padding: 14px 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 
-.members-list td {
-  padding: 16px 14px;
-  border-bottom: 1px solid #e5e7eb;
+.members-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
   color: #374151;
-  font-size: 14px;
+  vertical-align: middle;
 }
 
-.members-list tbody tr:hover {
-  background-color: #f9fafb;
+.members-row:last-child td {
+  border-bottom: none;
+}
+
+.members-row {
+  transition: background 0.12s;
+}
+
+.members-row:hover {
+  background: #fafaff;
+}
+
+/* Row number */
+.members-idx {
+  color: #d1d5db;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ── Name cell ────────────────────────────────────────── */
+.members-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.members-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.members-fullname {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.members-id-sub {
+  font-size: 11.5px;
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+/* ── QR code ──────────────────────────────────────────── */
+.members-qr-code {
+  background: #f3f4f6;
+  color: #6366f1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  letter-spacing: 0.02em;
+  border: 1px solid #e5e7eb;
+}
+
+/* ── Date ─────────────────────────────────────────────── */
+.members-date {
+  color: #6b7280;
+  font-size: 13.5px;
+}
+
+/* ── Status badge ─────────────────────────────────────── */
+.members-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.members-status-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ── Action buttons ───────────────────────────────────── */
+.members-actions {
+  display: flex;
+  gap: 6px;
 }
 
 .action-btn {
-  padding: 7px 10px;
-  margin-right: 8px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1.5px solid #e5e7eb;
   background: #fff;
   cursor: pointer;
-  font-size: 14px;
   transition: all 0.15s;
 }
 
@@ -85,6 +276,7 @@
 
 .edit-btn:hover {
   background: #ede9fe;
+  border-color: #a5b4fc;
 }
 
 .delete-btn {
@@ -94,48 +286,88 @@
 
 .delete-btn:hover {
   background: #fee2e2;
+  border-color: #f87171;
 }
 
-.no-data {
-  text-align: center;
+/* ── Empty / loading state ────────────────────────────── */
+.members-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 20px;
   color: #9ca3af;
-  padding: 40px;
+  gap: 12px;
+}
+
+.members-state p {
+  margin: 0;
   font-size: 14px;
 }
 
-@media (max-width: 1024px) {
-  .members-container {
-    padding: 1.5rem;
+.members-empty-icon {
+  font-size: 40px;
+  color: #d1d5db;
+}
+
+.members-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
+/* ── Footer ───────────────────────────────────────────── */
+.members-footer {
+  font-size: 12.5px;
+  color: #9ca3af;
+  text-align: right;
+  padding: 0 4px;
+}
+
+/* ── Responsive ───────────────────────────────────────── */
 @media (max-width: 768px) {
-  .members-container {
-    padding: 1rem;
+  .members-page {
+    padding: 1.25rem 1rem;
   }
 
-  .members-card {
-    padding: 15px;
+  .members-title {
+    font-size: 1.3rem;
   }
 
-  .members-header {
+  .members-search {
+    width: 180px;
+  }
+
+  .members-table th,
+  .members-table td {
+    padding: 12px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .members-topbar {
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 15px;
   }
 
-  .member-count {
-    margin-top: 10px;
+  .members-search {
+    width: 100%;
   }
 
-  .members-list th,
-  .members-list td {
-    padding: 12px 8px;
-    font-size: 13px;
+  .members-topbar-right {
+    width: 100%;
   }
 
-  .action-btn {
-    padding: 5px 8px;
-    font-size: 12px;
+  .members-search-wrap {
+    flex: 1;
   }
 }

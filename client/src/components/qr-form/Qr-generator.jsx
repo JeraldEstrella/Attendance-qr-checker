@@ -38,8 +38,7 @@ const QrGenerator = ({ onClose }) => {
 
       const data = await response.json();
       console.log('Member saved:', data);
-      alert('Member saved successfully!');
-      handleReset();
+      alert('Member saved successfully! Download your QR code below.');
     } catch (error) {
       console.error('Error saving member:', error);
       alert('Error saving member: ' + error.message);
