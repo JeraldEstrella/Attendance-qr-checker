@@ -13,6 +13,8 @@ const Dashboard = () => {
     [60, 50],
     [40, 32],
   ]);
+  const [monthNames, setMonthNames] = useState(['Jan', 'Feb', 'Mar', 'Apr']);
+  const [presentMembers, setPresentMembers] = useState([]);
   const [stats, setStats] = useState([
     {
       label: 'Present Today',
@@ -38,9 +40,9 @@ const Dashboard = () => {
 
   const fetchTodayStats = async () => {
     try {
-      const response = await fetch(
-        'https://attendance-qr-checker.onrender.com/api/attendance/today'
-      );
+      const apiUrl =
+        import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${apiUrl}/attendance/today`);
       const data = await response.json();
 
       if (data.success) {
@@ -48,6 +50,8 @@ const Dashboard = () => {
         const totalMembers = 50;
         const absentCount = totalMembers - presentCount;
         const attendanceRate = Math.round((presentCount / totalMembers) * 100);
+
+        setPresentMembers(data.data || []);
 
         setStats([
           {
@@ -81,6 +85,7 @@ const Dashboard = () => {
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear();
     const monthData = [];
+    const monthNames = [];
 
     // Get last 4 months
     for (let i = 3; i >= 0; i--) {
@@ -93,9 +98,16 @@ const Dashboard = () => {
         year -= 1;
       }
 
+      const monthName = new Date(year, month - 1).toLocaleString('default', {
+        month: 'short',
+      });
+      monthNames.push(monthName);
+
       try {
+        const apiUrl =
+          import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
         const response = await fetch(
-          `https://attendance-qr-checker.onrender.com/api/attendance/month/${month}/${year}`
+          `${apiUrl}/attendance/month/${month}/${year}`
         );
         const data = await response.json();
 
@@ -112,6 +124,7 @@ const Dashboard = () => {
     }
 
     setMonthlyHeights(monthData);
+    setMonthNames(monthNames);
   };
 
   const handleOverlayClick = (e) => {
@@ -189,7 +202,7 @@ const Dashboard = () => {
             <span className='date-range'>Last 4 months</span>
           </div>
           <div className='chart-area'>
-            {['Jan', 'Feb', 'Mar', 'Apr'].map((month, idx) => (
+            {monthNames.map((month, idx) => (
               <div key={month} className='bar-group'>
                 <div className='bars'>
                   <div
@@ -256,6 +269,40 @@ const Dashboard = () => {
               );
             })}
           </div>
+        </div>
+      </div>
+
+      {/* Present Members List */}
+      <div className='members-card'>
+        <div className='members-header'>
+          <h3>Present Members Today</h3>
+          <span className='member-count'>{presentMembers.length}</span>
+        </div>
+        <div className='members-list'>
+          {presentMembers.length > 0 ? (
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {presentMembers.map((member) => (
+                  <tr key={member._id}>
+                    <td>{member.fullName}</td>
+                    <td>{member.time}</td>
+                    <td>
+                      <span className='status-badge'>Present</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p className='no-data'>No members present today</p>
+          )}
         </div>
       </div>
 

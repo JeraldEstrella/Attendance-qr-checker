@@ -656,6 +656,77 @@
   opacity: 0.85;
 }
 
+/* Present Members Card */
+.members-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.members-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.members-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.member-count {
+  background: #6366f1;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.members-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.members-list th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.members-list td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+}
+
+.members-list tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.status-badge {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.no-data {
+  text-align: center;
+  color: #9ca3af;
+  padding: 30px;
+  font-size: 14px;
+}
+
 /* ═════════════════════════════════════════════════════════
    ─  RESPONSIVE MEDIA QUERIES
    ═════════════════════════════════════════════════════════ */
