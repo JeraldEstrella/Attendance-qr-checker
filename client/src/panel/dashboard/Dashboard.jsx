@@ -40,9 +40,9 @@ const Dashboard = () => {
 
   const fetchTodayStats = async () => {
     try {
-      const apiUrl =
-        import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const response = await fetch(`${apiUrl}/attendance/today`);
+      const response = await fetch(
+        'https://attendance-qr-checker.onrender.com/api/attendance/today'
+      );
       const data = await response.json();
 
       if (data.success) {
@@ -104,10 +104,8 @@ const Dashboard = () => {
       monthNames.push(monthName);
 
       try {
-        const apiUrl =
-          import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
         const response = await fetch(
-          `${apiUrl}/attendance/month/${month}/${year}`
+          `https://attendance-qr-checker.onrender.com/api/attendance/month/${month}/${year}`
         );
         const data = await response.json();
 
