@@ -26,6 +26,33 @@ const Members = () => {
     }
   };
 
+  const handleDelete = async (memberId, memberName) => {
+    if (!window.confirm(`Are you sure you want to delete ${memberName}?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://attendance-qr-checker.onrender.com/api/members/${memberId}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete member');
+      }
+
+      alert('Member deleted successfully!');
+      fetchMembers();
+    } catch (error) {
+      console.error('Error deleting member:', error);
+      alert('Error deleting member: ' + error.message);
+    }
+  };
+
   const filtered = members.filter((m) =>
     m.fullName.toLowerCase().includes(search.toLowerCase())
   );
@@ -149,6 +176,9 @@ const Members = () => {
                         <button
                           className='action-btn delete-btn'
                           title='Delete'
+                          onClick={() =>
+                            handleDelete(member._id, member.fullName)
+                          }
                         >
                           <i className='ti ti-trash'></i>
                         </button>

@@ -4,6 +4,7 @@ import './Scanner.css';
 
 export default function Scanner() {
   const videoRef = useRef(null);
+  const scannerRef = useRef(null);
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -14,6 +15,7 @@ export default function Scanner() {
       (res) => {
         console.log('Scanned:', res.data);
         setResult(res.data);
+        scanner.stop();
         sendToBackend(res.data);
       },
       {
@@ -22,16 +24,20 @@ export default function Scanner() {
       }
     );
 
+    scannerRef.current = scanner;
     scanner.start();
 
     return () => {
-      scanner.stop();
+      if (scannerRef.current) {
+        scannerRef.current.stop();
+      }
     };
   }, []);
 
   const sendToBackend = async (qrCode) => {
     if (!qrCode.trim()) {
       setMessage('Invalid QR code');
+      if (scannerRef.current) scannerRef.current.start();
       return;
     }
 
@@ -67,6 +73,7 @@ export default function Scanner() {
     } catch (error) {
       console.error('Error sending to backend:', error);
       setMessage(`✗ Error: ${error.message}`);
+      if (scannerRef.current) scannerRef.current.start();
     } finally {
       setLoading(false);
     }

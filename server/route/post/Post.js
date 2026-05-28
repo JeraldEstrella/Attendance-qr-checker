@@ -129,4 +129,31 @@ postsRouter.post('/attendance', async (req, res) => {
   }
 });
 
+// DELETE - Delete a member
+postsRouter.delete('/members/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const member = await Member.findByIdAndDelete(id);
+
+    if (!member) {
+      return res.status(404).json({
+        success: false,
+        message: 'Member not found',
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Member deleted successfully',
+      data: member,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 export default postsRouter;
