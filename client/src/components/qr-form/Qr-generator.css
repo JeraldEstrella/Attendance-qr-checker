@@ -3,12 +3,37 @@
   background: #fff;
   border-radius: 16px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 1.75rem;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Close ────────────────────────────────────────────── */
+.qrgen-card .close-btn {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: background 0.15s;
+}
+.qrgen-card .close-btn:hover {
+  background: #f5f5f5;
+}
+.qrgen-card .close-btn i {
+  font-size: 15px;
 }
 
 /* ── Header ───────────────────────────────────────────── */
@@ -43,38 +68,12 @@
   margin-top: 2px;
 }
 
-/* Close button — top right of card */
-.qrgen-card .close-btn {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 15px;
-  transition: background 0.15s;
-}
-.qrgen-card .close-btn:hover {
-  background: #f5f5f5;
-}
-.qrgen-card .close-btn i {
-  font-size: 15px;
-}
-
 /* ── Form ─────────────────────────────────────────────── */
 .qrgen-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
 .qrgen-field {
   display: flex;
   flex-direction: column;
@@ -87,8 +86,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.qrgen-field input,
-.qrgen-field select {
+.qrgen-field input {
   padding: 9px 11px;
   border: 1.5px solid #e5e7eb;
   border-radius: 8px;
@@ -99,24 +97,11 @@
   transition: border-color 0.15s;
   outline: none;
 }
-.qrgen-field input:focus,
-.qrgen-field select:focus {
+.qrgen-field input:focus {
   border-color: #6366f1;
 }
 .qrgen-field input::placeholder {
   color: #c4c4c4;
-}
-
-.qrgen-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.qrgen-divider {
-  border: none;
-  border-top: 1px solid #f3f4f6;
-  margin: 2px 0;
 }
 
 .qrgen-btn {
@@ -153,13 +138,14 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 1rem;
-  padding: 1.1rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem;
   background: #fafafa;
   border-radius: 12px;
   border: 1px dashed #d1d5db;
   animation: qrFadeIn 0.25s ease;
 }
+
 @keyframes qrFadeIn {
   from {
     opacity: 0;
@@ -171,45 +157,77 @@
   }
 }
 
+.qrgen-name-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6366f1;
+  background: #ede9fe;
+  padding: 4px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.01em;
+}
+
+/* QR box — sized to exactly contain the 200px canvas + padding */
 .qrgen-qr-box {
-  width: 130px;
-  height: 130px;
+  width: 220px;
+  height: 220px;
   background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
 }
-.qrgen-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  width: 100%;
-  height: 100%;
-}
-.qrgen-cell {
-  border-radius: 1px;
-  background: #e5e7eb;
-}
-.qrgen-cell.filled {
-  background: #1a1a2e;
+
+/* canvas rendered by QRCodeCanvas should never exceed the box */
+.qrgen-qr-box canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .qrgen-info {
   text-align: center;
 }
-.qrgen-info strong {
-  display: block;
-  font-size: 0.875rem;
-  color: #1a1a2e;
-}
-.qrgen-info span {
-  font-size: 0.72rem;
-  color: #aaa;
+.qrgen-info small {
+  font-size: 11px;
+  color: #bbb;
+  word-break: break-all;
 }
 
+/* ── Save button (full width, green) ─────────────────── */
+.qrgen-save-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px;
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.qrgen-save-btn:hover {
+  opacity: 0.88;
+}
+.qrgen-save-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.qrgen-save-btn i {
+  font-size: 16px;
+}
+
+/* ── Download / Reset row ─────────────────────────────── */
 .qrgen-actions {
   display: flex;
   gap: 8px;
@@ -222,7 +240,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px;
+  padding: 9px;
   border-radius: 8px;
   font-size: 12.5px;
   font-weight: 500;

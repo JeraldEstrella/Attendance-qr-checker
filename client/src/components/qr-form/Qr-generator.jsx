@@ -25,9 +25,7 @@ const QrGenerator = ({ onClose }) => {
         'https://attendance-qr-checker.onrender.com/api/save',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             fullName: form.name,
             qrCode: qrValue,
@@ -36,9 +34,7 @@ const QrGenerator = ({ onClose }) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error('Failed to save member');
-      }
+      if (!response.ok) throw new Error('Failed to save member');
 
       const data = await response.json();
       console.log('Member saved:', data);
@@ -59,22 +55,14 @@ const QrGenerator = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!form.name.trim()) return;
-
-    // Unique ID for QR (recommended instead of name/date)
     const id = `MEM-${Date.now()}`;
-
     setQrValue(id);
     setGenerated(true);
   };
 
   const handleReset = () => {
-    setForm({
-      name: '',
-      date: new Date().toISOString().split('T')[0],
-    });
-
+    setForm({ name: '', date: new Date().toISOString().split('T')[0] });
     setGenerated(false);
     setQrValue('');
   };
@@ -82,23 +70,19 @@ const QrGenerator = ({ onClose }) => {
   const handleDownload = () => {
     const canvas = qrRef.current?.querySelector('canvas');
     if (!canvas) return;
-
-    // Convert canvas to PNG and download
     const image = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = image;
-    link.download = `qr-code-${qrValue}.png`;
+    link.download = `qr-${form.name.replace(/\s+/g, '-')}-${qrValue}.png`;
     link.click();
   };
 
   return (
     <div className='qrgen-card'>
-      {/* Close */}
       <button className='close-btn' onClick={onClose}>
         <i className='ti ti-x'></i>
       </button>
 
-      {/* Header */}
       <div className='qrgen-header'>
         <div className='qrgen-icon'>
           <i className='ti ti-qrcode'></i>
@@ -111,7 +95,6 @@ const QrGenerator = ({ onClose }) => {
         </div>
       </div>
 
-      {/* Form */}
       <form className='qrgen-form' onSubmit={handleSubmit}>
         <div className='qrgen-field'>
           <label>Full Name</label>
@@ -146,34 +129,31 @@ const QrGenerator = ({ onClose }) => {
         )}
       </form>
 
-      {/* QR PREVIEW */}
       {generated && (
         <div className='qrgen-preview'>
-          {/* Only QR Code - This gets printed */}
-          <div ref={qrRef}>
-            <div className='qrgen-qr-box'>
-              <QRCodeCanvas value={qrValue} size={220} includeMargin={true} />
-            </div>
+          <div className='qrgen-name-badge'>{form.name}</div>
+
+          <div className='qrgen-qr-box' ref={qrRef}>
+            <QRCodeCanvas value={qrValue} size={200} includeMargin={false} />
           </div>
 
-          <div className='qrgen-info no-print'>
+          <div className='qrgen-info'>
             <small>ID: {qrValue}</small>
           </div>
 
-          <div className='qrgen-actions no-print'>
-            <button
-              className='qrgen-save-btn'
-              onClick={handleSaveMember}
-              disabled={loading}
-            >
-              <i className='ti ti-check'></i>
-              {loading ? 'Saving...' : 'Save Member'}
-            </button>
+          <button
+            className='qrgen-save-btn'
+            onClick={handleSaveMember}
+            disabled={loading}
+          >
+            <i className='ti ti-device-floppy'></i>
+            {loading ? 'Saving...' : 'Save Member'}
+          </button>
 
+          <div className='qrgen-actions'>
             <button className='qrgen-dl-btn' onClick={handleDownload}>
-              <i className='ti ti-printer'></i> Print
+              <i className='ti ti-download'></i> Download
             </button>
-
             <button className='qrgen-reset-btn' onClick={handleReset}>
               <i className='ti ti-refresh'></i> Reset
             </button>
