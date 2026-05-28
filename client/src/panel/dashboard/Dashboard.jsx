@@ -107,13 +107,29 @@ const Dashboard = () => {
         const response = await fetch(
           `https://attendance-qr-checker.onrender.com/api/attendance/month/${month}/${year}`
         );
+
+        if (!response.ok) {
+          console.error(
+            `Failed to fetch month ${month}/${year}:`,
+            response.status
+          );
+          monthData.push([0, 0]);
+          continue;
+        }
+
         const data = await response.json();
+        console.log(`Month ${month}/${year} data:`, data);
 
         if (data.success) {
-          const presentCount = data.count;
+          const presentCount = data.count || 0;
           const totalMembers = 50;
           const absentCount = totalMembers - presentCount;
+          console.log(
+            `${month}/${year}: Present=${presentCount}, Absent=${absentCount}`
+          );
           monthData.push([presentCount, absentCount]);
+        } else {
+          monthData.push([0, 0]);
         }
       } catch (error) {
         console.error(`Error fetching month ${month}/${year}:`, error);
@@ -121,6 +137,8 @@ const Dashboard = () => {
       }
     }
 
+    console.log('Final monthData:', monthData);
+    console.log('Final monthNames:', monthNames);
     setMonthlyHeights(monthData);
     setMonthNames(monthNames);
   };
