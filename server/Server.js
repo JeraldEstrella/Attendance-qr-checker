@@ -11,13 +11,20 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://attendance-qr-checker-jdv6ksvq5-jek-s-projects.vercel.app/',
+  'http://localhost:5000',
+  'https://attendance-qr-checker.vercel.app',
+  'https://attendance-qr-checker-jdv6ksvq5-jek-s-projects.vercel.app',
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
+      // Allow localhost + specific domains + any Vercel domain
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        (origin && origin.includes('vercel.app'))
+      ) {
         callback(null, true);
       } else {
         callback(new Error('CORS not allowed'));
@@ -39,7 +46,6 @@ app.use(express.json({ limit: '10mb' }));
   }
 })();
 
-// Remove the /post and /get prefixes
 app.use('/api', postsRouter);
 app.use('/api', getRouter);
 
