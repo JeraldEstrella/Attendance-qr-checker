@@ -11,7 +11,7 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://attendance-qr-checker-ojpkugd2t-jek-s-projects.vercel.app',
+  'https://attendance-qr-checker-jdv6ksvq5-jek-s-projects.vercel.app/',
 ];
 
 app.use(
