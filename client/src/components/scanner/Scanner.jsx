@@ -39,15 +39,18 @@ export default function Scanner() {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/attendance', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          qrCode: qrCode,
-        }),
-      });
+      const response = await fetch(
+        'https://attendance-qr-checker.onrender.com/api/attendance',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            qrCode: qrCode,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to record attendance');

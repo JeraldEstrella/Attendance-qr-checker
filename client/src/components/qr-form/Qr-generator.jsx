@@ -21,17 +21,20 @@ const QrGenerator = ({ onClose }) => {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: form.name,
-          qrCode: qrValue,
-          date: form.date,
-        }),
-      });
+      const response = await fetch(
+        'https://attendance-qr-checker.onrender.com/api/save',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fullName: form.name,
+            qrCode: qrValue,
+            date: form.date,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to save member');

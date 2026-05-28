@@ -39,7 +39,7 @@ const Dashboard = () => {
   const fetchTodayStats = async () => {
     try {
       const response = await fetch(
-        'http://localhost:3000/api/attendance/today'
+        'https://attendance-qr-checker.onrender.com/api/attendance/today'
       );
       const data = await response.json();
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/attendance/month/${month}/${year}`
+          `https://attendance-qr-checker.onrender.com/api/attendance/month/${month}/${year}`
         );
         const data = await response.json();
 
