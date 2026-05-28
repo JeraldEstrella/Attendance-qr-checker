@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Attendance from '../../monggoDb/model/Attendance.js';
+import Member from '../../monggoDb/model/Member.js';
 
 const getRouter = Router();
 
@@ -127,5 +128,23 @@ getRouter.get(
     }
   }
 );
+
+// GET - All members
+getRouter.get('/members', async (req, res) => {
+  try {
+    const members = await Member.find().sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      count: members.length,
+      data: members,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 export default getRouter;

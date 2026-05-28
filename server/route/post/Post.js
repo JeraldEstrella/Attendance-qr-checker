@@ -16,6 +16,24 @@ postsRouter.post('/save', async (req, res) => {
       });
     }
 
+    // Check if member with same name already exists
+    const existingMemberByName = await Member.findOne({ fullName });
+    if (existingMemberByName) {
+      return res.status(400).json({
+        success: false,
+        message: 'Member with this name is already registered',
+      });
+    }
+
+    // Check if member with same QR code already exists
+    const existingMemberByQR = await Member.findOne({ qrCode });
+    if (existingMemberByQR) {
+      return res.status(400).json({
+        success: false,
+        message: 'QR code is already registered',
+      });
+    }
+
     const newMember = new Member({
       fullName,
       qrCode,
@@ -42,7 +60,6 @@ postsRouter.post('/attendance', async (req, res) => {
   try {
     const { qrCode } = req.body;
 
-    // Get current date info
     const now = new Date();
     const date = now.toISOString().split('T')[0];
     const time = now.toTimeString().split(' ')[0];
@@ -50,7 +67,6 @@ postsRouter.post('/attendance', async (req, res) => {
     const year = now.getFullYear();
     const day = now.toLocaleDateString('en-US', { weekday: 'long' });
 
-    // Find member by QR code
     const member = await Member.findOne({ qrCode });
 
     if (!member) {
@@ -60,20 +76,26 @@ postsRouter.post('/attendance', async (req, res) => {
       });
     }
 
-    // Check if already marked today
     const existingAttendance = await Attendance.findOne({
       userId: member._id,
       date,
     });
 
     if (existingAttendance) {
-      return res.status(400).json({
-        success: false,
-        message: 'Attendance already recorded today',
-      });
+      const lastScanTime = new Date(
+        existingAttendance.createdAt || existingAttendance.timestamp
+      );
+      const timeDiffSeconds = (now - lastScanTime) / 1000;
+
+      if (timeDiffSeconds < 5) {
+        return res.status(400).json({
+          success: false,
+          message:
+            'Duplicate scan detected. Please wait before scanning again.',
+        });
+      }
     }
 
-    // Save attendance
     const newAttendance = new Attendance({
       userId: member._id,
       fullName: member.fullName,
@@ -94,6 +116,12 @@ postsRouter.post('/attendance', async (req, res) => {
       data: newAttendance,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Duplicate attendance record',
+      });
+    }
     res.status(500).json({
       success: false,
       message: error.message,
