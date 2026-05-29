@@ -16,7 +16,6 @@ postsRouter.post('/save', async (req, res) => {
       });
     }
 
-    // Check if member with same name already exists
     const existingMemberByName = await Member.findOne({ fullName });
     if (existingMemberByName) {
       return res.status(400).json({
@@ -25,7 +24,6 @@ postsRouter.post('/save', async (req, res) => {
       });
     }
 
-    // Check if member with same QR code already exists
     const existingMemberByQR = await Member.findOne({ qrCode });
     if (existingMemberByQR) {
       return res.status(400).json({
@@ -62,9 +60,9 @@ postsRouter.post('/attendance', async (req, res) => {
 
     const now = new Date();
     const date = now.toISOString().split('T')[0];
-    const time = now.toTimeString().split(' ')[0];
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
+    const time = now.toISOString().split('T')[1].slice(0, 8);
+    const month = now.getUTCMonth() + 1;
+    const year = now.getUTCFullYear();
     const day = now.toLocaleDateString('en-US', { weekday: 'long' });
 
     const member = await Member.findOne({ qrCode });
@@ -82,18 +80,10 @@ postsRouter.post('/attendance', async (req, res) => {
     });
 
     if (existingAttendance) {
-      const lastScanTime = new Date(
-        existingAttendance.createdAt || existingAttendance.timestamp
-      );
-      const timeDiffSeconds = (now - lastScanTime) / 1000;
-
-      if (timeDiffSeconds < 5) {
-        return res.status(400).json({
-          success: false,
-          message:
-            'Duplicate scan detected. Please wait before scanning again.',
-        });
-      }
+      return res.status(409).json({
+        success: false,
+        message: `Attendance already recorded for ${member.fullName} today (${date})`,
+      });
     }
 
     const newAttendance = new Attendance({
@@ -117,9 +107,9 @@ postsRouter.post('/attendance', async (req, res) => {
     });
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
-        message: 'Duplicate attendance record',
+        message: 'Attendance already recorded for today',
       });
     }
     res.status(500).json({
