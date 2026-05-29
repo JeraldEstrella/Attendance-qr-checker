@@ -5,6 +5,7 @@ import './Scanner.css';
 export default function Scanner() {
   const videoRef = useRef(null);
   const scannerRef = useRef(null);
+  const hasScannedRef = useRef(false); // 👈 guard flag
   const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -13,9 +14,12 @@ export default function Scanner() {
     const scanner = new QrScanner(
       videoRef.current,
       (res) => {
+        if (hasScannedRef.current) return; // 👈 block any duplicate fires
+        hasScannedRef.current = true; // 👈 lock immediately
+
         console.log('Scanned:', res.data);
-        setResult(res.data);
         scanner.stop();
+        setResult(res.data);
         sendToBackend(res.data);
       },
       {
@@ -37,6 +41,7 @@ export default function Scanner() {
   const sendToBackend = async (qrCode) => {
     if (!qrCode.trim()) {
       setMessage('Invalid QR code');
+      hasScannedRef.current = false; // 👈 unlock so user can retry
       if (scannerRef.current) scannerRef.current.start();
       return;
     }
@@ -49,12 +54,8 @@ export default function Scanner() {
         'https://attendance-qr-checker.onrender.com/api/attendance',
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            qrCode: qrCode,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ qrCode }),
         }
       );
 
@@ -69,10 +70,13 @@ export default function Scanner() {
       setTimeout(() => {
         setResult('');
         setMessage('');
+        hasScannedRef.current = false; // 👈 unlock for next scan
+        if (scannerRef.current) scannerRef.current.start();
       }, 2000);
     } catch (error) {
       console.error('Error sending to backend:', error);
       setMessage(`✗ Error: ${error.message}`);
+      hasScannedRef.current = false; // 👈 unlock on error so user can retry
       if (scannerRef.current) scannerRef.current.start();
     } finally {
       setLoading(false);
